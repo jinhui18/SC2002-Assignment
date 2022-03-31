@@ -1,0 +1,84 @@
+import java.io.IOException;
+import java.util.Scanner;
+
+public class GuestUI {
+
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		int choice;
+		Scanner sc = new Scanner(System.in);
+		GuestController gc = new GuestController();
+		gc.init();
+		do {
+				System.out.println("==================================================");
+				System.out.println("  Guest Details Management: ");
+				System.out.println("==================================================");
+				System.out.println("1: Create Guest Profile");
+				System.out.println("2: Update Guest Profile");
+				System.out.println("3: Remove Guest Profile");
+				System.out.println("4: View a Guest Profile");
+				System.out.println("5: View all Guests Profile");
+				System.out.println("6: Save Data and go back");
+				
+				
+				choice = sc.nextInt();
+				sc.nextLine();
+				System.out.println("\n");
+				
+				switch (choice) {
+				 //Create Guest Profile
+				 case 1:gc.CreateGuestProfile();
+				 		break;
+				 		
+				 //Update Guest Profile
+				 case 2:System.out.println("Please provide the Customer's Name: ");
+				 		String name = sc.nextLine();
+				 		System.out.println("Please provide the Customer's Passport Number: ");
+				 		String identity = sc.nextLine();
+				 		int success = GuestController.updateGuestDetails(name,identity);
+				 		if (success == 1) {
+					 		System.out.println("Updated sucessfully.");
+				 		}
+				 		else {
+					 		System.out.println("Update not successful.");
+
+				 		}
+				 		break;
+				 		
+				 //Remove a Guest Profile
+				 case 3:System.out.println("Please provide the Customer's Name: ");
+			 			name = sc.nextLine();
+			 			System.out.println("Please provide the Customer's Passport Number: ");
+			 			identity = sc.nextLine();
+			 			success = GuestController.RemoveGuestProfile(name,identity);
+				 		if (success == 1) {
+					 		System.out.println("Removed sucessfully.");
+				 		}
+				 		else {
+					 		System.out.println("Removal not successful.");
+				 		}
+				 		break;
+				 		
+				 //View all Guests Profile
+				 case 4:System.out.println("Please provide the Customer's Name: ");
+			 			name = sc.nextLine();
+			 			System.out.println("Please provide the Customer's Passport Number: ");
+			 			identity = sc.nextLine();
+			 			GuestController.printGuestProfile(name,identity);
+			 			break;
+			 			
+				 //View all Guests Profile
+				 case 5:
+			 			GuestController.printGuestProfileAll();
+			 			break;
+				 case 6: System.out.println("Back.");
+				 		break; 
+				}
+		}
+		while(choice != 6);
+		System.out.println("END OF SYSTEM OPS, PROCEED TO SAVE");
+		gc.saveFile();
+		//gc.save();
+	}
+	
+}
