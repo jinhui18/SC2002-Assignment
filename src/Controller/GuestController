@@ -1,0 +1,783 @@
+import java.util.Scanner;
+
+import java.io.IOException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class GuestController {
+	private static final String SEPARATOR = "|";
+	private static ArrayList<Guest> guestList;
+	private static String databaseLocationGuest= "C:\\Users\\jinhu\\eclipse-workspace\\Assignment 2\\Guest.txt";
+	CreditCardDetails creditCardDetails;
+		
+	public GuestController() {
+		guestList = new ArrayList<>();
+		creditCardDetails = new CreditCardDetails();
+	}
+	
+	public static void CreateGuestProfile() {
+			Scanner sc = new Scanner(System.in);
+			String name;
+			String identity;
+			String address;
+			String country;
+			int gender;
+			String nationality;
+			String contact;
+			CreditCardDetails creditCardDetails;
+			int flag;
+			String cardNum;
+			String expiryDate;
+			String cvvNum;
+
+			Guest guest = new Guest();
+			//creditCardDetails = new CreditCardDetails2();
+			System.out.println("==================================");
+			System.out.println(" Guest Creation ");
+			System.out.println("==================================");
+			// set name
+			do{
+				System.out.println("Please enter your full name (accordance with passport): ");
+				name = sc.nextLine();
+				flag =0;
+				if (name.length() == 0) {
+					System.out.println("Please enter a valid name\n");
+					flag =1;
+				}
+				for (int i =0; i<name.length(); i++) {
+					if ( ( (!Character.isLetter(name.charAt(i))  ) && (name.charAt(i) != ' ' ) ) || name == "\n") {
+						
+						System.out.println("Please enter a valid name\n");
+						flag =1;
+						break;
+					}
+				}
+				if (flag != 1) {
+					guest.setName(name);
+				}
+
+			}
+			while( flag == 1);
+			flag=0;
+			
+			// set identity or passport number
+			do{
+				System.out.println("\nPlease enter your passport number: ");
+				identity = sc.nextLine();
+				flag =0;
+				if (identity == "") {
+					System.out.println("Please enter a valid passport number\n");
+					flag=1;
+				}
+				// error checking for duplicate passport number
+				for (int i = 0; i<guestList.size() ; i++) {
+					Guest g = guestList.get(i);
+					if ( identity.equals(g.getIdentity() ) ) {
+						System.out.println("Error. Passport number already exist, please enter a new passport number\n");
+						flag=1;
+						break;
+					}
+					
+				}
+				if (flag != 1) {
+					guest.setIdentity(identity);
+				}
+			}
+			while( flag == 1); 
+			
+			
+			flag=0;
+			// set address
+			do{
+				System.out.println("\nPlease enter your residental address: ");
+				address = sc.nextLine();
+				flag =0;
+				if (address == "") {
+					System.out.println("Please enter a valid residental address:\n");
+					flag=1;
+				}
+				if (flag != 1) {
+					guest.setAddress(address);
+				}
+			}
+			while( flag == 1); 
+			
+			flag=0;
+			// set country
+			do{
+				System.out.println("\nPlease enter your Country: ");
+				country = sc.nextLine();
+				flag =0;
+				if (country == "") {
+					System.out.println("Please enter a valid country:\n");
+					flag=1;
+				}
+				for (int i =0; i<country.length(); i++) {
+					if (!Character.isLetter(country.charAt(i))) {
+						System.out.println("Please enter a valid Country\n");
+						flag =1;
+						break;
+					}
+				}
+				if (flag != 1) {
+					guest.setCountry(country);
+				}
+			}
+			while( flag == 1); 
+			
+			flag=0;
+			// set gender
+			do{
+				System.out.println("\nPlease choose your Gender: ");
+				System.out.println("(1) Male");
+				System.out.println("(2) Female ");
+				System.out.println("(3) Others");
+				gender = sc.nextInt();
+				sc.nextLine();
+				flag =0;
+				if (gender != 1 && gender != 2 && gender != 3) {
+					System.out.println("Please enter a valid input:\n");
+					flag=1;
+				}
+				else {
+					switch(gender) {
+						case 1:
+							guest.setGender("Male");
+							break;
+						case 2:
+							guest.setGender("Female");
+							break;
+						case 3:
+							guest.setGender("Others");
+							break;
+					}	
+				}
+
+			}
+			while( flag == 1); 
+			
+			flag=0;
+			// set nationality
+			do{
+				System.out.println("\nPlease enter your Nationality: ");
+				nationality = sc.nextLine();
+				flag =0;
+				if (nationality == "") {
+					System.out.println("Please enter a valid Nationality\n");
+					flag =1;
+				}
+				for (int i =0; i<nationality.length(); i++) {
+					if (!Character.isLetter(nationality.charAt(i))) {
+						System.out.println("Please enter a valid Nationality\n");
+						flag =1;
+						break;
+					}
+				}
+				if (flag != 1) {
+					guest.setNationality(nationality);
+				}
+			}
+			while( flag == 1);
+			
+			flag =0;
+			// set contact
+			do{
+				System.out.println("\nPlease enter your Phone Number: ");
+				contact = sc.nextLine();
+				flag =0;
+				if (contact == "") {
+					System.out.println("Please enter a valid Phone Number:\n");
+					flag=1;
+				}
+				for (int i =0; i<contact.length(); i++) {
+					if (!Character.isDigit(contact.charAt(i))) {
+						System.out.println("Please enter a valid Phone Number\n");
+						flag =1;
+						break;
+					}
+				}
+				if (flag != 1) {
+					guest.setContact(contact);
+				}
+			}
+			while( flag == 1);
+			
+			
+			
+			
+			// set creditCardDetails
+			
+			System.out.println("\nPlease enter your Credit Card Details: ");
+			
+			while(true) {
+				System.out.println("Please enter your Card Number: ");
+				cardNum = sc.nextLine();
+				flag=0;
+				if (cardNum == "" || cardNum.length() != 16) {
+					System.out.println("Please enter a valid Card Number\n");
+					flag =1;
+					continue;
+				}
+
+				for (int i =0; i<cardNum.length(); i++) {
+					if (!Character.isDigit(cardNum.charAt(i))) {
+						System.out.println("Please enter a valid Card Number\n");
+						flag =1;
+						break;
+					}
+				}
+				if (flag == 0) {
+					break;
+				}
+			}
+			flag =0;
+			while (true) {
+				System.out.println("\nPlease enter your Card Expiry Date (MM/YY): ");
+				//String strPattern = "^\\d{2}/\\d{2}$";
+				String strPattern = "^(0[1-9]|1[012])/\\d{2}$";
+
+				expiryDate = sc.nextLine();
+				if (expiryDate.matches(strPattern) ) {
+					break;
+				}	
+				System.out.println("Please enter a valid Card Expiry Date (MM/YY)\n");
+			}
+
+			
+			while(true) {
+				System.out.println("\nPlease enter your CVV number: ");
+				cvvNum = sc.nextLine();
+				if (cvvNum.length() != 3) {
+					System.out.println("Please enter a valid CVV Number\n");
+					continue;
+				}
+				for (int i =0; i<cvvNum.length(); i++) {
+					if (!Character.isDigit(cvvNum.charAt(i))) {
+						System.out.println("Please enter a valid CVV Number\n");
+						flag =1;
+						break;
+					}
+				}
+				if (flag == 0) {
+					break;
+				}
+			}
+			
+			creditCardDetails = new CreditCardDetails(cardNum, expiryDate, cvvNum);
+			guest.setCreditCardDetails(creditCardDetails);
+
+			guestList.add(guest);
+			
+	}
+	
+	
+	public static int RemoveGuestProfile(String name, String icNum) {
+		int index = -1;
+		index = SearchGuestProfile( name,  icNum);
+		if (index == -1) {
+			System.out.println("No such customer in our records.");
+			return 0;
+		}
+		guestList.remove(index);
+		return 1;
+	}
+
+	// i changed it to argument for icNum instead of contact
+	public static int SearchGuestProfile(String name, String icNum) {
+		for (int j=0; j< guestList.size(); j++) {
+			if ( name.equals(guestList.get(j).getName())  && icNum.equals(guestList.get(j).getIdentity()) ) {
+				return j;
+			}
+		}
+		return -1;
+	}
+	
+	public static int updateGuestDetails(String name_input, String icNum_input) {
+		Scanner sc = new Scanner(System.in);
+		String nameNew;
+		String identityNew;
+		String addressNew;
+		String countryNew;
+		int genderNew;
+		String nationalityNew;
+		String contactNew = "";
+		CreditCardDetails creditCardDetailsNew;
+		String cardNumNew;
+		String expiryDateNew;
+		String cvvNumNew;
+		int flag =0;
+		int index;
+		int choice =0;
+		
+		index = SearchGuestProfile( name_input,  icNum_input);
+		if (index == -1) {
+			System.out.println("No such customer in our records.");
+			return 0;
+		}
+		while (choice !=9) {
+			System.out.println("\nPlease choose Guest Detail to update");
+			System.out.println("(1) Name");
+			System.out.println("(2) Identity");
+			System.out.println("(3) Address");
+			System.out.println("(4) Country");
+			System.out.println("(5) Gender");
+			System.out.println("(6) Nationality");
+			System.out.println("(7) Contact Number");
+			System.out.println("(8) Credit Card");
+			System.out.println("(9) Exit");
+
+			choice = sc.nextInt();
+			sc.nextLine();
+			flag =0;
+			switch(choice) {
+			case 1:	while(true) {
+					System.out.print("\nPlease Enter New Name (-1 to exit): ");
+					nameNew = sc.nextLine();
+					
+						if (nameNew == "") {
+							System.out.println("Please enter a valid name\n");
+							continue;
+						}
+						else if (nameNew.equals("-1")) {
+							flag = -1;
+							break;
+						}
+						for (int i =0; i<nameNew.length(); i++) {
+							if (!Character.isLetter(nameNew.charAt(i))) {
+								System.out.println("Please enter a valid name\n");
+								flag =1;
+								break;
+							}
+						}
+						if (flag ==0) {
+							System.out.println("Name updated successfully\n");
+							guestList.get(index).setName(nameNew);
+							break;
+						}
+						else if (flag == -1) {
+							System.out.println("Cancel update\n");
+						}
+						flag=0;
+					}
+					break;
+					
+			case 2: 
+					do {
+						System.out.println("\nPlease enter your new Passport Number (-1 to exit): ");
+						identityNew = sc.nextLine();
+						
+						flag =0;
+						if (identityNew == "") {
+							System.out.println("Please enter a valid passport number\n");
+							flag=1;
+						}
+						else if (identityNew.equals("-1")) {
+							flag = -1;
+							break;
+						}
+						// error checking for duplicate passport number
+						for (int i = 0; i<guestList.size() ; i++) {
+							Guest g = guestList.get(i);
+							if ( identityNew.equals(g.getIdentity() ) ) {
+								System.out.println("Error. Passport number already exist, please enter a new passport number\n");
+								flag=1;
+								break;
+							}
+							
+						}
+					}
+					while(flag ==1);
+					if (flag == 0) {
+						System.out.println("Passport Number updated successfully\n");
+						guestList.get(index).setIdentity(identityNew);
+					}
+					else if (flag == -1) {
+						System.out.println("Cancel update\n");
+					}
+					break;
+			case 3:	
+					do {
+						System.out.println("\nPlease enter your new Residental Address (-1 to exit): ");
+						addressNew = sc.nextLine();
+						flag =0;
+						if (addressNew == "") {
+							System.out.println("Please enter a valid residental address:\n");
+							flag=1;
+						}
+						else if (addressNew.equals("-1")) {
+							flag = -1;
+							break;
+						}
+						
+					}
+					while(flag ==1);
+					if (flag == 0) {
+						System.out.println("Address updated successfully\n");
+						guestList.get(index).setAddress(addressNew);
+					}
+					else if (flag == -1) {
+						System.out.println("Cancel update\n");
+					}
+					break;
+					
+			case 4:	
+					do {
+						System.out.println("\nPlease enter your new Country (-1 to exit): ");
+						countryNew = sc.nextLine();
+						flag =0;
+						if (countryNew == "") {
+							System.out.println("Please enter a valid country:\n");
+							flag=1;
+						}
+						else if (countryNew.equals("-1")) {
+							flag = -1;
+							break;
+						}
+						for (int i =0; i<countryNew.length(); i++) {
+							if (!Character.isLetter(countryNew.charAt(i))) {
+								System.out.println("Please enter a valid Country\n");
+								flag =1;
+								break;
+							}
+						}		
+					}
+					while(flag ==1);	
+					if (flag ==0) {
+						System.out.println("Country updated successfully\n");
+						guestList.get(index).setCountry(countryNew);
+					}
+					else if (flag == -1) {
+						System.out.println("Cancel update\n");
+					}
+					break;
+					
+			case 5:	do {
+						System.out.println("\nPlease choose your new Gender (-1 to exit): ");
+							System.out.println("(1) Male");
+							System.out.println("(2) Female ");
+							System.out.println("(3) Others");
+
+							while (true) {
+								genderNew = sc.nextInt();
+								sc.nextLine();
+								flag =0;
+								if (genderNew == -1) {
+									flag = -1;
+									break;
+								}
+								if (genderNew != 1 && genderNew != 2 && genderNew != 3) {
+									System.out.println("Please enter a valid Gender:\n");
+									flag=1;
+								}
+								else {
+									switch(genderNew) {
+										case 1:
+											guestList.get(index).setGender("Male");
+											break;
+										case 2:
+											guestList.get(index).setGender("Female");
+											break;
+										case 3:
+											guestList.get(index).setGender("Others");
+											break;
+									}
+									System.out.println("Gender updated successfully\n");
+									break;
+								}
+							}
+					}
+					while(flag ==1);
+					if (flag == -1) {
+						System.out.println("Cancel update\n");
+					}
+					break;
+			case 6: do{
+						System.out.println("\nPlease enter your New Nationality (-1 to exit): ");
+						nationalityNew = sc.nextLine();
+						flag =0;
+						if (nationalityNew == "") {
+							System.out.println("Please enter a valid Nationality\n");
+							flag =1;
+						}
+						else if (nationalityNew.equals("-1")) {
+							flag = -1;
+							break;
+						}
+						for (int i =0; i<nationalityNew.length(); i++) {
+							if (!Character.isLetter(nationalityNew.charAt(i))) {
+								System.out.println("Please enter a valid Nationality\n");
+								flag =1;
+								break;
+							}
+						}				
+						
+					}
+					while( flag == 1);
+					if (flag ==0) {
+						System.out.println("Nationality updated successfully\n");
+						guestList.get(index).setNationality(nationalityNew);	
+					}
+					else if (flag == -1) {
+						System.out.println("Cancel update\n");
+					}
+					break;
+			case 7:	do{
+						System.out.println("\nPlease enter your phone number (-1 to exit): ");
+						contactNew = sc.nextLine();
+						flag =0;
+						if (contactNew == "") {
+							System.out.println("Please enter a valid phone number:\n");
+							flag=1;
+						}	
+						else if (contactNew.equals("-1")) {
+							flag = -1;
+							break;
+						}
+						else {
+							for (int i =0; i<contactNew.length(); i++) {
+								if (!Character.isDigit(contactNew.charAt(i))) {
+									System.out.println("Please enter a valid Phone Number\n");
+									flag =1;
+									break;
+								}
+							}
+						}
+
+						
+					}
+					while( flag == 1);
+					if (flag == 0) {
+						System.out.println("Phone Number updated successfully\n");
+						guestList.get(index).setContact(contactNew);
+					}
+					else if (flag == -1) {
+						System.out.println("Cancel update\n");
+					}
+					break;
+				
+			case 8:	System.out.println("\nPlease enter your Credit Card Details: ");
+					while(true) {
+							System.out.println("Please enter your Card Number: ");
+							cardNumNew = sc.nextLine();
+							flag =0;
+							if (cardNumNew == "" || cardNumNew.length() != 16) {
+								System.out.println("Please enter a valid Card Number\n");
+								flag =1;
+								continue;
+							}
+							for (int i =0; i<cardNumNew.length(); i++) {
+								if (!Character.isDigit(cardNumNew.charAt(i))) {
+									System.out.println("Please enter a valid Card Number\n");
+									flag =1;
+									break;
+								}
+							}
+							if (flag == 0) {
+								break;
+							}
+						}
+						flag =0;
+						while (true) {
+							System.out.println("\nPlease enter your Card Expiry Date (MM/YY): ");
+							//strPattern reflects MM/YY
+							String strPattern = "^(0[1-9]|1[012])/\\d{2}$";
+
+							expiryDateNew = sc.nextLine();
+							if (expiryDateNew.matches(strPattern) ) {
+								break;
+							}	
+							System.out.println("Please enter a valid Card Expiry Date (MM/YY)\n");
+						}
+
+						
+						
+						while(true) {
+							System.out.println("\nPlease enter your CVV number: ");
+							cvvNumNew = sc.nextLine();
+							if (cvvNumNew.length() != 3 && cvvNumNew.length() != 4) {
+								System.out.println("Please enter a valid CVV Number\n");
+								continue;
+							}
+							for (int i =0; i<cvvNumNew.length(); i++) {
+								if (!Character.isDigit(cvvNumNew.charAt(i))) {
+									System.out.println("Please enter a valid CVV Number\n");
+									flag =1;
+									break;
+								}
+							}
+							if (flag == 0) {
+								break;
+							}
+						}
+						creditCardDetailsNew = new CreditCardDetails(cardNumNew, expiryDateNew, cvvNumNew);
+						System.out.println("Credit Card Details updated successfully\n");
+						break;
+			case 9:
+				break;
+
+			}
+			
+		}
+		return 1;
+		
+	}
+	public static void printGuestProfile(String name, String icNum) {
+		int index = -1;
+		index = SearchGuestProfile( name,  icNum);
+		if (index == -1) {
+			System.out.println("No such customer in our records.");
+		}
+		else {
+			System.out.println("Name: " + guestList.get(index).getName() +
+								"\nPassport Number: " + guestList.get(index).getIdentity() +
+								"\nAddress: " + guestList.get(index).getAddress() +
+								"\nCountry: " + guestList.get(index).getCountry() + 
+								"\nGender: " + guestList.get(index).getGender() + 
+								"\nNationality: " + guestList.get(index).getNationality() + 
+								"\nContact Number: " + guestList.get(index).getContact() );
+		}
+
+	}
+	public static void printGuestProfileAll() {
+		int index = 0;
+		Scanner sc = new Scanner(System.in);
+		for (int k =0; k<guestList.size() ; k++ ) {
+			if(guestList.get(k) == null) {
+				continue;
+			}
+			else {
+				System.out.println("Customer " + (index+1) + ":\n" + "Name: " + guestList.get(k).getName() +
+									"\nPassport Number: " + guestList.get(k).getIdentity() +
+									"\nContact Number: " + guestList.get(k).getContact() + 
+									"\nAddress: " + guestList.get(index).getAddress() +
+										"\nCountry: " + guestList.get(index).getCountry() + 
+										"\nGender: " + guestList.get(index).getGender() + 
+										"\nNationality: " + guestList.get(index).getNationality() + 
+										"\nContact Number: " + guestList.get(index).getContact() + "\n");
+				index++;
+			}
+		}
+
+		
+	}
+	
+
+	
+	public void saveFile() throws IOException{
+		List alw = new ArrayList(); ;
+        for (int i = 0 ; i < guestList.size() ; i++) {
+			
+				Guest g = (Guest) guestList.get(i);				
+				StringBuilder st =  new StringBuilder() ;
+				
+
+				
+				st.append(g.getName().trim());
+				st.append(SEPARATOR);
+				st.append(g.getIdentity().trim());
+				st.append(SEPARATOR);
+				st.append(g.getAddress().trim());
+				st.append(SEPARATOR);
+				st.append(g.getCountry().trim());
+				st.append(SEPARATOR);
+				st.append(g.getGender().trim());
+				st.append(SEPARATOR);
+				st.append(g.getNationality().trim());
+				st.append(SEPARATOR);
+				st.append(g.getContact().trim());
+				st.append(SEPARATOR);
+				CreditCardDetails c = g.getCreditCardDetails();
+				st.append(c.getCardNumber().trim());
+				st.append(SEPARATOR);
+				st.append(c.getExpiryDate().trim());
+				st.append(SEPARATOR);
+				st.append(c.getCvvNumber().trim());
+				st.append(SEPARATOR);
+				
+				
+				alw.add(st.toString()) ;
+
+			}
+        write("Guest.txt", alw);
+	}
+	
+	
+	  public static void write(String fileName, List data) throws IOException  {
+		    PrintWriter out = new PrintWriter(new FileWriter(fileName));
+
+		    try {
+				for (int i =0; i < data.size() ; i++) {
+		      		out.println((String)data.get(i));
+				}
+		    }
+		    finally {
+		      out.close();
+		    }
+		  }
+
+	///////////////////////////////////////////////////////////////
+
+	
+	public static List read(String fileName) throws IOException {
+		List data = new ArrayList() ;
+	    Scanner scanner = new Scanner(new FileInputStream(fileName));
+	    try {
+	      while (scanner.hasNextLine()){
+	        data.add(scanner.nextLine());
+	      }
+	    }
+	    finally{
+	      scanner.close();
+	    }
+	    return data;
+	  }
+	  
+	  public void init() throws IOException{
+
+				ArrayList <String> stringArray = (ArrayList) read ("Guest.txt");
+		        for (int i = 0 ; i < stringArray.size() ; i++) {
+						String st = (String)stringArray.get(i);
+						// get individual 'fields' of the string separated by SEPARATOR
+						StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
+						int gender_insert;
+	
+						
+						
+						
+						String  name = star.nextToken().trim();	// first token
+						String  identity = star.nextToken().trim();	// second token
+						String  address = star.nextToken().trim();	// first token
+						String  country = star.nextToken().trim();	// second token
+						String  gender = star.nextToken().trim();	// first token
+	
+						String  nationality = star.nextToken().trim();	// second token
+						String  contact = star.nextToken().trim();	// first token
+						
+						String  cardNumber = star.nextToken().trim();	// first token
+						String  expiryDate = star.nextToken().trim();	// second token
+						String  cvvNumber = star.nextToken().trim();	// first token
+	
+						CreditCardDetails ccd = new CreditCardDetails( cardNumber,  expiryDate,  cvvNumber);
+						Guest guest = new Guest( name,  identity,  address,  country,  gender,  nationality,  contact, 
+								 ccd );
+						
+						guestList.add(guest);
+
+					}
+			}
+
+
+
+}
