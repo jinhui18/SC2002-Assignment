@@ -1,4 +1,4 @@
-package Assignment_SC2002;
+package Controller;
 
 import java.util.Scanner;
 import java.util.regex.Matcher;
