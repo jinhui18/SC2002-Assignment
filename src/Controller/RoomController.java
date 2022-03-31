@@ -11,13 +11,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
-import Assignment_SC2002.Room.*;
-//import Database.RoomDB;
+import Class.Room.*;
+//import DB.RoomDB;
 
 public class RoomController{
 	private static ArrayList<Room> roomList;
 	Room hotelRoom = new Room();
-	//private static final String filename = "Room.txt";
 	
 	public void createRoom() throws IOException
 	{
@@ -990,13 +989,11 @@ public class RoomController{
         String line;
         String sep ="@";
         roomList = new ArrayList<>();
-        //System.out.println("Initializing");
         try {
             BufferedReader reader = new BufferedReader(new FileReader("Room.txt"));
             //System.out.println("file read");
             while((line=reader.readLine())!=null){
                 arrLine = line.split(sep);
-                //System.out.printf("arrLine[0] is %s\n", arrLine[0]);
                 Room newRoom = new Room(arrLine[0],BedType.valueOf(arrLine[1]),RoomType.valueOf(arrLine[2]),RoomStatus.valueOf(arrLine[3]),Boolean.parseBoolean(arrLine[4]),Boolean.parseBoolean(arrLine[5]),Boolean.parseBoolean(arrLine[6]),Double.parseDouble(arrLine[7])); // Add in all the parameters for room
                 // Format is Room Number, Bed Type, Room Type, Room Status, Wifi Availability, View Availability, Smoking Rule, Price
                 roomList.add(newRoom);
@@ -1007,7 +1004,6 @@ public class RoomController{
             e.printStackTrace();
             return;
         }
-        //System.out.println("Orders initialized.");
     }
     public void saveRoom(){
         try {
@@ -1017,9 +1013,8 @@ public class RoomController{
                 		roomList.get(i).getWifiAvailability() + '@' + roomList.get(i).getViewAvailability() + '@' + roomList.get(i).getSmokingRule() + '@' + roomList.get(i).getPrice() + '@');
                 writer.write('\n');
             }
-            //writer.write("hello\n");
             writer.close();
-            System.out.println("RoomDB saved.");
+            System.out.println("Room has been saved in RoomDB.");
         } catch (IOException e) {
             e.printStackTrace();
         }
