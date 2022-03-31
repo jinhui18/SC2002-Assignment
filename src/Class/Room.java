@@ -1,4 +1,4 @@
-package Assignment_SC2002;
+package Class;
 
 public class Room {
 	enum RoomStatus {
