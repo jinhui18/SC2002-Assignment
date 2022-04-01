@@ -351,6 +351,23 @@ public class ReservationController {
 		//Guest g = null;
 		//Room r = null;
 		Guest g = gc.createGuestProfileForReservation();
+/*
+		int flagResStatus = 0;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please enter the roomID (xx-yy) (xx:02-07 ; yy:01-08);
+		String roomID = sc.next();
+		int room_index = rc.searchRoom(roomID);
+		Room room = (Room) rc.getRoomList().get(room_index);
+		RoomStatus roomStatus = room.getStatus();
+		if(roomStatus==RoomStatus.VACANT) room.setStatus(RoomStatus.RESERVED);
+		else { System.out.println("This room is currently unavailable, The reservation will be in the waitlist.); flagResStatus=1;}
+		Room r = new Room(room.getType(),roomID,room.getBedType(),room.isHasWifi(),room.isHasView(),room.isHasSmoking(),room.getStatus());
+		
+		//delete the code for ResStatus below, so that it is automatically updated
+		ResStatus resStatus;
+		if(flagResStatus == 1) resStatus= ResStatus.WAITLIST;
+		else resStatus = ResStatus.COMFIRMED;
+*/		
 		Room r = rc.createRoomForReservation();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		System.out.println("Please enter check-in date (dd/MM/yyyy) (input -1 to cancel)");
@@ -418,7 +435,7 @@ public class ReservationController {
 			}while(haveChange!=3);
 			return reservation;
 	}
-	
+	/*
 	public static void walkIn()
 	{
 		Reservation r = createReservation();
@@ -510,7 +527,7 @@ public class ReservationController {
 		Room room = (Room) roomList.get(room_index);
 		room.setStatus(RoomStatus.VACANT);
 	}
-	
+	*/
 	public static void printAllReservation()
 	{
 		//有点傻啊。。。
