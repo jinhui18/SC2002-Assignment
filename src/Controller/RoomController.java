@@ -635,7 +635,7 @@ public class RoomController{
 		scanner.close();
 	}
 	
-	private int searchRoom(String roomNumber)
+	public int searchRoom(String roomNumber)
 	{
 		for (int i=0;i<roomList.size();i++)
 		{
