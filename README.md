@@ -14,5 +14,5 @@ Members:
 1. Cooper Loke ([@Popickdra](https://github.com/Popickdra))
 2. Cheong Jin Hui ([@jinhui18](https://github.com/jinhui18))
 3. Chia Jer Wen ([@Chia-Jer-Wen](https://github.com/Chia-Jer-Wen))
-4. Mary Soh ([@marysoh](https://github.com/marysoh)
+4. Mary Soh ([@marysoh](https://github.com/marysoh))
 5. Cheryl Koh 
